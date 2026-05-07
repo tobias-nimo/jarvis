@@ -16,8 +16,7 @@ class Settings(BaseSettings):
 
     # ── LLM Provider ─────────────────────────────────────────────────────────
     groq_api_key: str = ""
-    openai_api_key: str = ""
-    anthropic_api_key: str = ""
+    openrouter_api_key: str = ""
 
     # ── Tools ─────────────────────────────────────────────────────────────────
     tavily_api_key: str = ""

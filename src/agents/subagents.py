@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from langchain_groq import ChatGroq
+from langchain_groq import ChatGroq # or ChatOpenAI
 
 from ..config import settings
 from ..prompts import prompts
@@ -16,6 +16,13 @@ from ..tools.view_image import view_image
 _ROOT = Path(settings.project_root)
 
 llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
+
+#llm = ChatOpenAI(
+#    model="openai/gpt-5.4-nano",
+#    api_key=settings.openrouter_api_key,
+#    base_url="https://openrouter.ai/api/v1",
+#    reasoning={"effort": "high"},
+#)
 
 web_research_subagent = {
     "name": "web-research-subagent",
