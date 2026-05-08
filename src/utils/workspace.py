@@ -8,10 +8,6 @@ _ROOT = Path(settings.project_root)
 
 WORKSPACE = _ROOT / ".workspace"
 SKILLS_SRC = _SRC / "skills"
-SKILLS_DEST = WORKSPACE / "skills"
-MEMORIES_DIR = WORKSPACE / "memories"
-COWORK_MD = WORKSPACE / "COWORK.md"
-
 
 def sync_skills() -> None:
     """Sync skills from src/skills/ into .workspace/skills/.
@@ -21,7 +17,7 @@ def sync_skills() -> None:
     """
     for src_path in SKILLS_SRC.rglob("*"):
         rel = src_path.relative_to(SKILLS_SRC)
-        dest_path = SKILLS_DEST / rel
+        dest_path = WORKSPACE / "skills" / rel
 
         if src_path.is_dir():
             dest_path.mkdir(parents=True, exist_ok=True)
@@ -34,13 +30,14 @@ def setup_workspace() -> None:
     """Initialise .workspace/ in the project root (idempotent).
 
     On every run this will:
-    1. Create .workspace/, memories/, and COWORK.md if missing
-    2. Sync src/skills/ → .workspace/skills/ (adds new/updated skills,
-       preserves project-specific skills, memories, docs, and COWORK.md)
+    1. Create .workspace/ if missing
+    2. Sync src/skills/ → .workspace/skills/ 
+        - adds new/updated skills,
+        - preserves project-specific skills and memories
     """
     WORKSPACE.mkdir(parents=True, exist_ok=True)
-    MEMORIES_DIR.mkdir(exist_ok=True)
-    if not COWORK_MD.exists():
-        COWORK_MD.touch()
+    (WORKSPACE / "memories").mkdir(exist_ok=True)
 
     sync_skills()
+
+    return WORKSPACE

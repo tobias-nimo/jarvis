@@ -1,7 +1,7 @@
 [project]
-name = "deepagent-template"
+name = "jarvis"
 version = "0.1.0"
-description = "A LangChain DeepAgent template"
+description = "A personal assistant implemented with LangChain Deep Agents framework."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A LangGraph-based multi-agent system ("cowork") built on LangChain Deep Agents. A coordinator agent orchestrates four specialized subagents (local research, web research, browser, Google Workspace) with an extensible skills system. Uses Claude Haiku 4.5 as the default LLM.
+A LangGraph-based multi-agent system ("jarvis") built on LangChain [Deep Agents](https://docs.langchain.com/oss/python/deepagents/overview). A coordinator agent orchestrates four specialized subagents (local research, web research, browser, Google Workspace) with an extensible skills system.
 
 ## Commands
 
@@ -30,10 +30,10 @@ uv run ruff format --check src/ tests/
 
 ### Agent Graph
 
-Entry point: `src/agents/deepagent.py` exports `cowork` (the LangGraph graph).
+Entry point: `src/agents/deepagent.py` exports `jarvis` (the LangGraph graph).
 
-- **Main agent** (`deepagent.py`): Coordinator using `create_deep_agent()` with `LocalShellBackend`. Has tools for OCR (`to_md`), document conversion (`md_to_pdf`, `md_to_docx`), and image viewing (`view_image`). Uses HITL interrupts on `edit_file`.
-- **local-research-subagent** (`subagents.py`): Local document search and analysis via BM25-ranked markdown section search (`outline`, `search`), OCR (`to_md`), and image viewing (`view_image`).
+- **Main agent** (`deepagent.py`): Coordinator using `create_deep_agent()` with `LocalShellBackend`. Uses HITL interrupts on `edit_file`.
+- **local-research-subagent** (`subagents.py`): Local document search and analysis via BM25-ranked markdown section search (`outline` and `search`).
 - **web-research-subagent** (`subagents.py`): Web search, extraction, crawling, and deep research via the Tavily CLI (`tvly`).
 - **browser-subagent** (`subagents.py`): Browser automation (navigation, form filling, screenshots, data extraction) via the `browser-use` CLI.
 - **gws-subagent** (`subagents.py`): Google Workspace operations (Drive, Gmail, Calendar, Docs, Sheets) via GWS MCP server.
@@ -48,19 +48,18 @@ System prompts are markdown files in `src/prompts/` loaded by `src/prompts/__ini
 
 ### Middleware
 
-`src/middleware/image_content.py`: Intercepts `view_image` tool calls and rewrites ToolMessage with base64 multimodal image blocks.
+No middleware implemented yet.
 
 ### Configuration
 
-`src/config.py` uses Pydantic Settings, loading from `.env`. Required: `ANTHROPIC_API_KEY`. Optional: `TAVILY_API_KEY`, `MISTRAL_API_KEY`, LangSmith keys, `PROJECT_ROOT`, `DEBUG`.
+`src/config.py` uses Pydantic Settings, loading from `.env`. Required: `GROQ_API_KEY`. Optional: `TAVILY_API_KEY`, `MISTRAL_API_KEY`, LangSmith keys, `PROJECT_ROOT`, `DEBUG`.
 
 ### Runtime Workspace
 
 On first run, `src/utils/workspace.py:setup_workspace()` creates `.workspace/` in the project root containing:
 - `skills/` — copied from `src/skills/`, loaded into agents at runtime
 - `memories/` — empty dir for agent memory files (one markdown file per memory, with YAML frontmatter)
-- `COWORK.md` — empty file for agent-managed notes
-- `docs/` — created by OCR tool output
+- `AGENTS.md` — empty file for agent-managed notes
 
 The workspace init is idempotent — skipped if `.workspace/` already exists.
 
@@ -69,7 +68,7 @@ The workspace init is idempotent — skipped if `.workspace/` already exists.
 - Python 3.12+, managed with `uv`
 - Ruff for linting (line-length 100, ignores E501)
 - pytest with `asyncio_mode = "auto"`
-- LangGraph config in `langgraph.json` (graph ID: `cowork`)
+- LangGraph config in `langgraph.json` (graph ID: `jarvis`)
 - Node.js required for GWS MCP server
 - Tavily CLI (`tvly`) required for research subagent
 - `browser-use` CLI + `cloudflared` required for browser subagent

@@ -13,16 +13,11 @@ from ..middleware import image_content_middleware
 from ..tools.md_tools import outline, search
 from ..tools.view_image import view_image
 from .subagents import subagents
-from ..utils import setup_workspace, SKILLS_DEST, COWORK_MD
+from ..utils import setup_workspace
 
 # Set up .workspace/
 _ROOT = Path(settings.project_root)
-setup_workspace()
-
-llm = ChatGroq(
-    model="openai/gpt-oss-20b",
-    api_key=settings.groq_api_key
-)
+WORKSPACE = setup_workspace()
 
 #llm = ChatOpenAI(
 #    model="openai/gpt-5.4-nano",
@@ -31,10 +26,13 @@ llm = ChatGroq(
 #    reasoning={"effort": "high"},
 #)
 
-# Deep Agent
-cowork = create_deep_agent(
+# Create deepagent
+jarvis = create_deep_agent(
     # LLM
-    model=llm,
+    model=ChatGroq(
+        model="openai/gpt-oss-20b",
+        api_key=settings.groq_api_key
+    ),
     
     # System prompt
     system_prompt=prompts.get(
@@ -47,8 +45,8 @@ cowork = create_deep_agent(
     subagents=subagents,
 
     # Skills + Memory
-    skills=[str((SKILLS_DEST / "general").relative_to(_ROOT))],
-    memory=[str(COWORK_MD.relative_to(_ROOT))],
+    skills=[str((WORKSPACE / "skills" / "general").relative_to(_ROOT))],
+    memory=[str((WORKSPACE / "memories" / "AGENTS.md").relative_to(_ROOT))],
 
     # Tools
     tools=[view_image, outline, search], # + built-ins

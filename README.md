@@ -1,6 +1,6 @@
-# Cowork
+# Jarvis
 
-A LangChain implementation of Anthropic’s Cowork.
+A personal assistant implemented with LangChain [Deep Agents](https://docs.langchain.com/oss/python/deepagents/overview) framework.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ gws auth login   # authenticate with your Google account
 
 ```bash
 git clone <repo-url>
-cd cowork
+cd jarvis
 
 cp example.env .env
 # Fill in your API keys in .env
@@ -77,7 +77,7 @@ This template ships **backend-only**. Connect any LangGraph-compatible chat UI t
 1. Open **[agentchat.vercel.app](https://agentchat.vercel.app)**
 2. Enter your connection details:
    - **Deployment URL**: `http://localhost:2024` (local dev) or your deployed URL
-   - **Graph ID**: `cowork` (the key in `langgraph.json`)
+   - **Graph ID**: `jarvis` (the key in `langgraph.json`)
    - **LangSmith API key**: optional, only needed for deployed (non-local) agents
 3. Start chatting — the UI auto-detects tool calls and HITL interrupts.
 
@@ -109,10 +109,10 @@ Studio lets you visually inspect graph runs, step through nodes, and replay trac
 ## Project Structure
 
 ```
-cowork/
+jarvis/
 ├── src/
 │   ├── agents/
-│   │   ├── deepagent.py      # Main agent; exports `cowork_agent`
+│   │   ├── deepagent.py      # Main agent
 │   │   └── subagents.py      # local-research, web-research, browser, gws subagents
 │   ├── tools/
 │   ├── prompts/
