@@ -7,9 +7,7 @@ from langchain_groq import ChatGroq # or ChatOpenAI
 from ..config import settings
 from ..prompts import prompts
 from ..utils import WORKSPACE
-
 from ..tools.md_tools import outline, search
-from ..tools.mistral_ocr import to_md
 
 _ROOT = Path(settings.project_root)
 
@@ -35,7 +33,7 @@ local_research_subagent = {
     "model": llm,
     "description": "Searches, navigates, and analyzes local documents and files — use it to find information in large markdown files within the workspace.",
     "system_prompt": prompts.get("local-research"),
-    "tools": [to_md, outline, search]
+    "tools": [outline, search]
 }
 
 gws_subagent = {

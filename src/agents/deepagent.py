@@ -9,8 +9,8 @@ from langchain_groq import ChatGroq # or ChatOpenAI
 
 from ..config import settings
 from ..prompts import prompts
-from ..tools.md_tools import outline, search
 from .subagents import subagents
+from ..tools.md_tools import outline, search
 from ..utils import setup_workspace, WORKSPACE
 
 # Set up .workspace/
