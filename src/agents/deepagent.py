@@ -9,15 +9,13 @@ from langchain_groq import ChatGroq # or ChatOpenAI
 
 from ..config import settings
 from ..prompts import prompts
-from ..middleware import image_content_middleware
 from ..tools.md_tools import outline, search
-from ..tools.view_image import view_image
 from .subagents import subagents
-from ..utils import setup_workspace
+from ..utils import setup_workspace, WORKSPACE
 
 # Set up .workspace/
 _ROOT = Path(settings.project_root)
-WORKSPACE = setup_workspace()
+setup_workspace()
 
 #llm = ChatOpenAI(
 #    model="openai/gpt-5.4-nano",
@@ -49,7 +47,7 @@ jarvis = create_deep_agent(
     memory=[str((WORKSPACE / "memories" / "AGENTS.md").relative_to(_ROOT))],
 
     # Tools
-    tools=[view_image, outline, search], # + built-ins
+    tools=[outline, search], # + built-ins
 
     # HITL
     interrupt_on={

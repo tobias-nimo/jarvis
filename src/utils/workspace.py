@@ -39,5 +39,3 @@ def setup_workspace() -> None:
     (WORKSPACE / "memories").mkdir(exist_ok=True)
 
     sync_skills()
-
-    return WORKSPACE
