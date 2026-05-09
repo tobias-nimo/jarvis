@@ -7,6 +7,7 @@ from langchain_groq import ChatGroq # or ChatOpenAI
 from ..config import settings
 from ..prompts import prompts
 from ..utils import WORKSPACE
+from ..tools.view_image import view_image
 from ..tools.md_tools import outline, search
 
 _ROOT = Path(settings.project_root)
@@ -25,6 +26,7 @@ web_research_subagent = {
     "model": llm,
     "description": "Performs precise, in-depth web research and returns structured, reliable findings.",
     "system_prompt": prompts.get("web-research"),
+    "tools": [view_image],
     "skills": [str((WORKSPACE / "skills" / "tavily").relative_to(_ROOT))]
 }
 
@@ -33,7 +35,7 @@ local_research_subagent = {
     "model": llm,
     "description": "Searches, navigates, and analyzes local documents and files — use it to find information in large markdown files within the workspace.",
     "system_prompt": prompts.get("local-research"),
-    "tools": [outline, search]
+    "tools": [outline, search, view_image]
 }
 
 gws_subagent = {
@@ -41,7 +43,8 @@ gws_subagent = {
     "model": llm,
     "description": "Interacts with the full Google Workspace suite (Drive, Gmail, Calendar, Docs and Sheets) via the gws MCP — use it to read/write files in drive, manage emails, schedule events.",
     "system_prompt": prompts.get("google"),
-    "skills": [str((WORKSPACE / "skills" / "gws").relative_to(_ROOT))],
+    "tools": [view_image],
+    "skills": [str((WORKSPACE / "skills" / "gws").relative_to(_ROOT))]
 }
 
 browser_subagent = {
@@ -49,7 +52,8 @@ browser_subagent = {
     "model": llm,
     "description": "Automates browser interactions — navigates websites, fills forms, extracts data, takes screenshots, and handles authenticated sessions via the browser-use CLI.",
     "system_prompt": prompts.get("browser"),
-    "skills": [str((WORKSPACE / "skills" / "browser").relative_to(_ROOT))],
+    "tools": [view_image],
+    "skills": [str((WORKSPACE / "skills" / "browser").relative_to(_ROOT))]
 }
 
 subagents = [
