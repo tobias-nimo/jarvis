@@ -60,13 +60,15 @@ Copy `example.env` to `.env` and set the following:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `ANTHROPIC_API_KEY` | Yes | [Anthropic](https://console.anthropic.com) API key — used for all LLM calls |
-| `MISTRAL_API_KEY` | Yes | [Mistral](https://console.mistral.ai) API key — used for OCR (`to_md` tool) |
-| `TAVILY_API_KEY` | Yes | [Tavily](https://tavily.com) API key — used by the research subagent |
+| `GROQ_API_KEY` | Yes | [Groq](https://console.groq.com) API key — used for all LLM calls |
+| `TAVILY_API_KEY` | No | [Tavily](https://tavily.com) API key — used by the web-research subagent |
+| `MISTRAL_API_KEY` | No | [Mistral](https://console.mistral.ai) API key — used by the `any-to-md` skill's MistralOCR fallback |
+| `OPENROUTER_API_KEY` | No | [OpenRouter](https://openrouter.ai) API key — alternative LLM provider |
 | `LANGCHAIN_TRACING_V2` | No | Set to `true` to enable LangSmith tracing |
 | `LANGCHAIN_API_KEY` | No | LangSmith API key |
 | `LANGCHAIN_PROJECT` | No | LangSmith project name |
 | `PROJECT_ROOT` | No | Root directory for the filesystem backend (default: `.`) |
+| `DEBUG` | No | Set to `true` to enable agent debug mode |
 
 ## Chat UI
 
@@ -126,25 +128,29 @@ jarvis/
 
 ## LLM Configuration
 
-The agent defaults to **Claude Haiku 4.5** via the Anthropic API.
+The agent defaults to **Groq `openai/gpt-oss-20b`**.
 
 To switch providers, update `src/agents/deepagent.py` and `src/agents/subagents.py`:
 
 ```python
-# OpenAI
+# OpenRouter (any model)
 from langchain_openai import ChatOpenAI
-llm = ChatOpenAI(model="gpt-4o", api_key=settings.openai_api_key)
+llm = ChatOpenAI(
+    model="openai/gpt-5.4-nano",
+    api_key=settings.openrouter_api_key,
+    base_url="https://openrouter.ai/api/v1",
+)
 
-# Groq
-from langchain_groq import ChatGroq
-llm = ChatGroq(model="llama-3.3-70b-versatile", api_key=settings.groq_api_key)
+# Anthropic
+from langchain_anthropic import ChatAnthropic
+llm = ChatAnthropic(model="claude-haiku-4-5", api_key=settings.anthropic_api_key)
 ```
 
 ## Subagents
 
 | Subagent | Tools | Description |
 |----------|-------|-------------|
-| `local-research-subagent` | `outline`, `search`, `to_md`, `view_image` | Local document search and analysis (BM25-ranked markdown section search, OCR) |
+| `local-research-subagent` | `outline`, `search` | Local document search and analysis (BM25-ranked markdown section search) |
 | `web-research-subagent` | Tavily CLI (`tvly`) | Web search, extraction, crawling, and deep research |
 | `browser-subagent` | browser-use CLI | Browser automation, form filling, screenshots, data extraction |
 | `gws-subagent` | Google Workspace MCP | Gmail, Drive, Calendar, Docs, Sheets |
@@ -161,7 +167,7 @@ They live in `src/skills/<group>/<skill-name>/SKILL.md`.
 | Browser | `src/skills/browser/` | `browser-subagent` |
 | Google Workspace | `src/skills/gws/` | `gws-subagent` |
 
-See `src/skills/general/skill-creator/SKILL.md` for the full guide on creating new skills.
+See `.claude/skills/skill-creator/SKILL.md` for the full guide on creating new skills.
 
 ## Human-in-the-Loop (HITL)
 
