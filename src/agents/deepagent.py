@@ -44,7 +44,7 @@ jarvis = create_deep_agent(
 
     # Skills + Memory
     skills=[str((WORKSPACE / "skills" / "general").relative_to(_ROOT))],
-    memory=[str((WORKSPACE / "memories" / "AGENTS.md").relative_to(_ROOT))],
+    memory=[str((WORKSPACE / "AGENTS.md").relative_to(_ROOT))],
 
     # Tools
     tools=[outline, search], # + built-ins
@@ -61,9 +61,6 @@ jarvis = create_deep_agent(
         root_dir=settings.project_root,
         inherit_env=True
     ), # + exec tool
-
-    # Middleware
-    middleware=[image_content_middleware],
 
     # Debug mode
     debug=settings.debug

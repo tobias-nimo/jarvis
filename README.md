@@ -113,14 +113,10 @@ jarvis/
 ├── src/
 │   ├── agents/
 │   │   ├── deepagent.py      # Main agent
-│   │   └── subagents.py      # local-research, web-research, browser, gws subagents
+│   │   └── subagents.py
 │   ├── tools/
 │   ├── prompts/
 │   ├── skills/
-│   │   ├── general/          # Skills loaded by the main agent
-│   │   ├── tavily/           # Skills loaded by the research-subagent
-│   │   ├── browser/          # Skills loaded by the browser-subagent
-│   │   └── gws/              # Skills loaded by the gws-subagent
 │   └── config.py             # Pydantic settings (loads from .env)
 ├── tests/                    # Pytest test suite
 ├── langgraph.json            # LangGraph server config
