@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from langchain_groq import ChatGroq # or ChatOpenAI
+from langchain_openai import ChatOpenAI # or ChatGroq
 
 from ..config import settings
 from ..prompts import prompts
@@ -12,14 +12,22 @@ from ..tools.md_tools import outline, search
 
 _ROOT = Path(settings.project_root)
 
-llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
+# LLM
+llm = ChatOpenAI(
+    model="qwen/qwen3.5-9b",
+    api_key=settings.openrouter_api_key,
+    base_url="https://openrouter.ai/api/v1",
+    temperature=1.0,
+    top_p=0.95,
+    presence_penalty=1.5,
+    extra_body={
+        "top_k": 20,
+        "min_p": 0.0,
+        "repetition_penalty": 1.0,
+    },
+) # or llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
 
-#llm = ChatOpenAI(
-#    model="openai/gpt-5.4-nano",
-#    api_key=settings.openrouter_api_key,
-#    base_url="https://openrouter.ai/api/v1",
-#    reasoning={"effort": "high"},
-#)
+# Subagents
 
 web_research_subagent = {
     "name": "web-research-subagent",
