@@ -56,12 +56,12 @@ No middleware implemented yet.
 
 ### Runtime Workspace
 
-On first run, `src/utils/workspace.py:setup_workspace()` creates `.workspace/` in the project root containing:
-- `skills/` — copied from `src/skills/`, loaded into agents at runtime
-- `memories/` — empty dir for agent memory files (one markdown file per memory, with YAML frontmatter)
-- `AGENTS.md` — empty file for agent-managed notes
+`src/utils/workspace.py:setup_workspace()` initialises `.workspace/` in the project root and runs on every agent startup. It contains:
+- `skills/` — synced from `src/skills/` on every run (adds new/updated skills, preserves project-specific ones)
+- `memories/` — agent memory files (one markdown file per memory, with YAML frontmatter); contents are preserved across runs
+- `AGENTS.md` — agent-managed notes; created empty if missing, never overwritten
 
-The workspace init is idempotent — skipped if `.workspace/` already exists.
+`setup_workspace()` is non-destructive: it only creates missing files and copies skills, never deletes user data.
 
 ## Key Conventions
 
