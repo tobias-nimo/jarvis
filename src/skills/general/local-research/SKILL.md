@@ -1,6 +1,6 @@
 ---
 name: local-research
-description: Use this skill for requests that require finding, reading, or analyzing information within local documents and files in the workspace
+description: Use this skill for requests that require finding, reading, or analyzing information within local documents and files.
 ---
 
 # Local Research Skill
@@ -14,7 +14,7 @@ Use this skill when you need to:
 - Find specific information across multiple local documents
 - Analyze or summarize the contents of PDFs, Office documents, or markdown files
 - Answer questions that require cross-referencing several local files
-- Extract and compare data from documents in the workspace
+- Extract and compare data from documents
 
 **Do NOT use this skill for web research** — use the web-research skill instead.
 
@@ -24,7 +24,7 @@ Use this skill when you need to:
 
 Before delegating to subagents:
 
-1. **Identify what files exist** — Use `ls` or `glob` to discover relevant documents in the workspace
+1. **Identify what files exist** — Use `ls` or `glob` to discover relevant documents
 2. **Determine file types** — Non-markdown files (PDF, DOCX, images) need OCR conversion before they can be searched
 3. **Plan the approach** — Decide whether you need a single subagent or multiple parallel subagents based on the number of files and questions
 
