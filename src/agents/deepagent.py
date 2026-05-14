@@ -5,7 +5,8 @@ from datetime import date
 
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
-from langchain_openai import ChatOpenAI # or ChatGroq
+from langchain_openai import ChatOpenAI 
+#from langchain_groq import ChatGroq
 
 from ..config import settings
 from ..prompts import prompts
@@ -21,15 +22,13 @@ setup_workspace()
 
 # LLM
 llm = ChatOpenAI(
-    model="google/gemma-4-31b-it",
+    model="openai/gpt-5.4-nano",
     api_key=settings.openrouter_api_key,
     base_url="https://openrouter.ai/api/v1",
-    temperature=1.0,
-    top_p=0.95,
-    extra_body={
-        "top_k": 64
-    },
-) # or llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
+    reasoning_effort="high",
+    use_responses_api=False,
+)
+#llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
 
 # System Prompt
 prompt = prompts.get(

@@ -2,7 +2,8 @@
 
 from pathlib import Path
 
-from langchain_openai import ChatOpenAI # or ChatGroq
+from langchain_openai import ChatOpenAI
+#from langchain_groq import ChatGroq
 
 from ..config import settings
 from ..prompts import prompts
@@ -14,18 +15,13 @@ _ROOT = Path(settings.project_root)
 
 # LLM
 llm = ChatOpenAI(
-    model="qwen/qwen3.5-9b",
+    model="openai/gpt-5.4-nano",
     api_key=settings.openrouter_api_key,
     base_url="https://openrouter.ai/api/v1",
-    temperature=1.0,
-    top_p=0.95,
-    presence_penalty=1.5,
-    extra_body={
-        "top_k": 20,
-        "min_p": 0.0,
-        "repetition_penalty": 1.0,
-    },
-) # or llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
+    reasoning_effort="high",
+    use_responses_api=False,
+) 
+#llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
 
 # Subagents
 
@@ -49,7 +45,7 @@ local_research_subagent = {
 gws_subagent = {
     "name": "gws-subagent",
     "model": llm,
-    "description": "Interacts with the full Google Workspace suite (Drive, Gmail, Calendar, Docs and Sheets) via the gws MCP — use it to read/write files in drive, manage emails, schedule events.",
+    "description": "Interacts with the full Google Workspace suite (Drive, Gmail, Calendar, Docs and Sheets) via the gws CLI, logged into the user's Google account (tobiasnimo99@gmail.com).",
     "system_prompt": prompts.get("google"),
     "tools": [view_image],
     "skills": [str((WORKSPACE / "skills" / "gws").relative_to(_ROOT))]
