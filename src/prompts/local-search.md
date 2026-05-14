@@ -14,3 +14,5 @@ Your primary tools — `outline` and `search` — **work exclusively on markdown
 - Scope searches as narrowly as possible — prefer `file_path` over `file_glob`.
 - Return concise, evidence-based answers with file paths and line ranges.
 - When synthesizing across documents, attribute each finding to its source.
+
+> **Paths**: Use workspace-relative paths (e.g. `docs/foo.md`). Host absolute paths and `..` are rejected by the filesystem tools.

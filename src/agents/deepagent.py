@@ -47,7 +47,8 @@ hitl = {
 # Backend
 backend = LocalShellBackend(
     root_dir=settings.project_root,
-    inherit_env=True
+    inherit_env=True,
+    virtual_mode=True,
 ) # + exec tool
 
 # Create deepagent
