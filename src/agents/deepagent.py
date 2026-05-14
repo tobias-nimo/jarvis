@@ -48,6 +48,7 @@ hitl = {
 backend = LocalShellBackend(
     root_dir=settings.project_root,
     inherit_env=True,
+    env={"WORKSPACE_ROOT": str(_ROOT)},
     virtual_mode=True,
 ) # + exec tool
 
