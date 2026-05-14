@@ -25,21 +25,22 @@ llm = ChatOpenAI(
 
 # Subagents
 
-web_research_subagent = {
-    "name": "web-research-subagent",
+web_search_subagent = {
+    "name": "web-search-subagent",
     "model": llm,
     "description": "Performs precise, in-depth web research and returns structured, reliable findings.",
-    "system_prompt": prompts.get("web-research"),
+    "system_prompt": prompts.get("web-search"),
     "tools": [view_image],
     "skills": [str((WORKSPACE / "skills" / "tavily").relative_to(_ROOT))]
 }
 
-local_research_subagent = {
-    "name": "local-research-subagent",
+local_search_subagent = {
+    "name": "local-search-subagent",
     "model": llm,
     "description": "Searches, navigates, and analyzes local documents and files — use it to find information in large markdown files within the workspace.",
-    "system_prompt": prompts.get("local-research"),
-    "tools": [outline, search, view_image]
+    "system_prompt": prompts.get("local-search"),
+    "tools": [outline, search, view_image],
+    "skills": [str((WORKSPACE / "skills" / "local").relative_to(_ROOT))]
 }
 
 gws_subagent = {
@@ -61,8 +62,8 @@ browser_subagent = {
 }
 
 subagents = [
-    local_research_subagent,
-    web_research_subagent,
+    local_search_subagent,
+    web_search_subagent,
     browser_subagent,
     gws_subagent
 ]
