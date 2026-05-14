@@ -22,12 +22,26 @@ setup_workspace()
 
 # LLM
 llm = ChatOpenAI(
-    model="openai/gpt-5.4-nano",
+    model="qwen/qwen3.6-35b-a3b",
     api_key=settings.openrouter_api_key,
     base_url="https://openrouter.ai/api/v1",
-    reasoning_effort="high",
+    temperature=1.0,
+    top_p=0.95,
+    presence_penalty=1.5,
+    extra_body={
+        "top_k": 20,
+        "min_p": 0.0,
+        "repetition_penalty": 1.0,
+    },
     use_responses_api=False,
 )
+#llm = ChatOpenAI(
+#    model="openai/gpt-5.4-nano",
+#    api_key=settings.openrouter_api_key,
+#    base_url="https://openrouter.ai/api/v1",
+#    reasoning_effort="high",
+#    use_responses_api=False,
+#)
 #llm = ChatGroq(model="openai/gpt-oss-20b", api_key=settings.groq_api_key)
 
 # System Prompt
